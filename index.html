@@ -1,0 +1,876 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aphélio — O que ver no céu este mês</title>
+<meta name="description" content="Aphélio é um guia mensal do céu: todo mês, o que dá para ver a olho nu, em que noite, a que horas e para onde olhar.">
+<meta name="theme-color" content="#050c26">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Instrument+Serif:ital@0;1&display=swap">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+  :root {
+    --bg: #050c26;
+    --ink: #e9eefc;
+    --dim: #8f9bc2;
+    --line: rgba(170, 190, 255, .16);
+    --line-2: rgba(170, 190, 255, .32);
+    --moon: #f3ecd9;
+    --a: #a9c2ff;
+    --b: #7f6bff;
+    --c: #5de0e6;
+    --paper: #eef1fb;
+    --sans: "Geist", "Helvetica Neue", Arial, system-ui, sans-serif;
+    --serif: "Instrument Serif", Georgia, serif;
+    --gutter: clamp(20px, 5vw, 72px);
+    --ease: cubic-bezier(.2, .7, .2, 1);
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html { scroll-behavior: smooth; background: var(--bg); }
+  body { background: var(--bg); transition: background-color 1.1s var(--ease); color: var(--ink); font-family: var(--sans); line-height: 1.55; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; cursor: pointer; background: none; border: 0; }
+  :focus-visible { outline: 2px solid var(--a); outline-offset: 3px; }
+  ::selection { background: var(--b); color: #fff; }
+
+  .small { font-size: 14px; color: var(--dim); }
+  .wrap { max-width: 1320px; margin-inline: auto; padding-inline: var(--gutter); }
+  section { position: relative; padding-block: clamp(96px, 12vw, 176px); scroll-margin-top: 40px; }
+  h1, h2, h3 { font-weight: 500; letter-spacing: -.04em; line-height: 1; }
+  h2 { font-size: clamp(42px, 6.4vw, 96px); max-width: 15ch; }
+  h1 em, h2 em { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spacing: -.02em; color: var(--a); }
+  .lead { color: var(--dim); font-size: clamp(17px, 1.7vw, 22px); max-width: 54ch; }
+  .head { display: grid; gap: 24px; margin-bottom: clamp(48px, 6vw, 80px); }
+
+  /* palavras dos títulos sobem ao entrar na tela */
+  /* folga em volta de cada palavra: o itálico da serifa passa da caixa e seria cortado */
+  .split .w { display: inline-block; overflow: hidden; vertical-align: top; padding: .04em .14em .16em; margin: -.04em -.14em -.16em; }
+  .split .w > span { display: inline-block; transform: translateY(105%); transition: transform 1s var(--ease) calc(var(--i) * 55ms); }
+  .split.in .w > span { transform: none; }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 15px 26px; border-radius: 999px; font-weight: 500; white-space: nowrap;
+    background: var(--ink); color: #071033; transition: background .25s, transform .25s; }
+  .btn:hover { background: var(--a); transform: translateY(-2px); }
+  .btn .arr { transition: transform .25s; }
+  .btn:hover .arr { transform: translateX(4px); }
+
+  /* inscrição: campo sublinhado */
+  .signup { display: flex; align-items: center; gap: 12px; max-width: 560px; border-bottom: 1px solid var(--line-2); padding-bottom: 10px; transition: border-color .3s; }
+  .signup:focus-within { border-color: var(--a); }
+  .signup input { flex: 1 1 auto; min-width: 0; padding: 12px 0; background: transparent; border: 0; color: var(--ink); font: inherit; font-size: 19px; outline: none; }
+  .signup input::placeholder { color: var(--dim); }
+  .msg { min-height: 24px; margin-top: 14px; color: var(--a); font-size: 15px; }
+  @media (max-width: 520px) { .signup { flex-direction: column; align-items: stretch; border-bottom: 0; } .signup input { border-bottom: 1px solid var(--line-2); } }
+
+  /* barra de progresso e nav */
+  #progress { position: fixed; inset: 0 0 auto 0; height: 2px; z-index: 60; transform-origin: left; transform: scaleX(0); background: linear-gradient(90deg, var(--b), var(--a), var(--c)); }
+  .top { position: fixed; z-index: 50; inset: 0 0 auto 0; transition: background .4s, border-color .4s; border-bottom: 1px solid transparent; }
+  .top.solid { background: rgba(5, 12, 38, .92); border-color: var(--line); }
+  .top-in { max-width: 1320px; margin-inline: auto; padding: 16px var(--gutter); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 500; font-size: 19px; letter-spacing: -.02em; }
+  .brand svg { width: 24px; height: 24px; }
+  .links { display: flex; gap: 30px; }
+  .links a { position: relative; padding: 4px 0; font-size: 15px; transition: color .2s; }
+  .links a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--a); transform: scaleX(0); transform-origin: left; transition: transform .35s var(--ease); }
+  .links a:hover { color: var(--ink); }
+  .links a:hover::after, .links a.on::after { transform: scaleX(1); }
+  .links a.on { color: var(--ink); }
+  .top .btn { padding: 11px 20px; font-size: 14px; }
+  @media (max-width: 860px) { .links { display: none; } }
+
+  /* herói */
+  .hero { min-height: 100svh; padding: 0; display: flex; align-items: flex-end; overflow: hidden; }
+  #sky { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: crosshair; }
+  .hero-in { position: relative; width: 100%; padding: 140px var(--gutter) clamp(40px, 8vh, 88px); max-width: 1320px; margin-inline: auto;
+    display: grid; grid-template-columns: 1fr 300px; gap: 48px; align-items: end; pointer-events: none; will-change: transform, opacity; }
+  .hero-in > * { pointer-events: auto; }
+  .hero h1 { font-size: clamp(46px, min(8.4vw, 14.5vh), 136px); line-height: 1.02; margin-bottom: clamp(18px, 3.4vh, 30px); }
+  .hero .lead { color: #c3cdea; font-size: clamp(17px, min(1.8vw, 3.2vh), 23px); margin-bottom: clamp(24px, 4.4vh, 40px); max-width: 44ch; }
+  .jump { display: inline-block; margin-top: 22px; color: #c3cdea; font-size: 16px; text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 6px; transition: color .2s, text-decoration-color .2s; }
+  .jump:hover { color: var(--ink); text-decoration-color: var(--a); }
+  .today-l { font-size: 14px; color: var(--a); }
+  .today { border-top: 1px solid var(--line-2); padding-top: 18px; display: grid; gap: 14px; }
+  .today-top { display: flex; align-items: center; gap: 16px; }
+  .today-top svg { width: 58px; height: 58px; flex: none; filter: drop-shadow(0 0 16px rgba(243,236,217,.35)); }
+  .today b { display: block; font-size: 19px; font-weight: 500; letter-spacing: -.02em; }
+  .today p { color: #c3cdea; font-size: 14.5px; }
+  .today .next strong { color: var(--a); font-weight: 500; }
+  @media (max-width: 900px) { .hero-in { grid-template-columns: 1fr; } .today { max-width: 480px; } }
+
+  /* destaques: ocular de telescópio */
+  .hl { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); }
+  .hitem { padding: 36px clamp(20px, 2.6vw, 40px) 48px; border-left: 1px solid var(--line); display: grid; gap: 16px; align-content: start; }
+  .hitem:first-child { border-left: 0; padding-left: 0; }
+  .hitem:last-child { padding-right: 0; }
+  .hitem .when { color: var(--a); font-size: 15px; }
+  .eye { position: relative; width: min(100%, 280px); aspect-ratio: 1; margin: 18px auto 26px; }
+  .eye::before { content: ""; position: absolute; inset: -16px; border-radius: 50%; transform: rotate(var(--rot, 0deg));
+    background: repeating-conic-gradient(rgba(169,194,255,.5) 0 .5deg, transparent .5deg 5deg);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 9px), #000 calc(100% - 9px)); mask: radial-gradient(farthest-side, transparent calc(100% - 9px), #000 calc(100% - 9px)); }
+  .eye::after { content: ""; position: absolute; inset: 0; border-radius: 50%; box-shadow: inset 0 0 50px 14px rgba(2,6,22,.85); border: 1px solid var(--line-2); pointer-events: none; }
+  .lens { position: absolute; inset: 0; border-radius: 50%; overflow: hidden; }
+  .lens svg { position: absolute; inset: -14%; width: 128%; height: 128%; transform: translate(var(--lx, 0px), var(--ly, 0px)) scale(var(--ls, 1)); transition: transform .5s var(--ease); }
+  .hitem:hover .lens svg { --ls: 1.08; }
+  .cross { position: absolute; inset: 0; pointer-events: none; }
+  .cross::before, .cross::after { content: ""; position: absolute; background: rgba(169,194,255,.18); }
+  .cross::before { left: 50%; top: 12%; bottom: 12%; width: 1px; }
+  .cross::after { top: 50%; left: 12%; right: 12%; height: 1px; }
+  .hitem h3 { font-family: var(--serif); font-weight: 400; font-size: clamp(38px, 3.4vw, 50px); letter-spacing: -.02em; }
+  .hitem p { color: #b6c0e0; font-size: 16px; }
+  .facts { display: grid; margin-top: 6px; }
+  .facts div { display: grid; grid-template-columns: 100px 1fr; gap: 14px; padding: 12px 0; border-top: 1px solid var(--line); font-size: 15px; }
+  .facts dt { font-size: 14px; color: var(--dim); }
+  .facts dd { margin: 0; }
+  .also { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .also div { padding: 26px 24px 28px; border-left: 1px solid var(--line); transition: background .3s; }
+  .also div:first-child { border-left: 0; padding-left: 0; }
+  .also div:hover { background: linear-gradient(180deg, rgba(127,107,255,.08), transparent); }
+  .also b { display: block; font-weight: 500; margin: 8px 0 6px; font-size: 18px; }
+  .also p { color: var(--dim); font-size: 14.5px; }
+  .note { margin-top: 22px; }
+  @media (max-width: 1000px) {
+    .hl { grid-template-columns: 1fr; }
+    .hitem { border-left: 0; padding-inline: 0; border-top: 1px solid var(--line); grid-template-columns: 220px 1fr; column-gap: 40px; }
+    .hitem:first-child { border-top: 0; }
+    .hitem .eye { grid-row: 1 / span 5; grid-column: 1; margin: 18px 0; }
+    .also { grid-template-columns: 1fr 1fr; } .also div:nth-child(3) { border-left: 0; padding-left: 0; } .also div:nth-child(n+3) { border-top: 1px solid var(--line); }
+  }
+  @media (max-width: 640px) { .hitem { grid-template-columns: 1fr; } .hitem .eye { grid-row: auto; width: 220px; margin: 18px auto; } .also { grid-template-columns: 1fr; } .also div { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); } .also div:first-child { border-top: 0; } }
+
+  /* calendário */
+  .cal-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 0; align-items: start; border-top: 1px solid var(--line); }
+  .cal { padding: 28px 40px 0 0; }
+  .cal-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; gap: 12px; }
+  .cal-top h3 { font-family: var(--serif); font-weight: 400; font-size: clamp(32px, 3.4vw, 46px); letter-spacing: -.02em; }
+  .arrows { display: flex; gap: 8px; }
+  .arrows button { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line-2); display: grid; place-items: center; font-size: 17px; transition: all .25s; }
+  .arrows button:hover:not(:disabled) { background: var(--ink); color: #071033; border-color: var(--ink); }
+  .arrows button:disabled { opacity: .25; cursor: default; }
+  .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .dow { text-align: center; padding-bottom: 8px; }
+  .day { position: relative; aspect-ratio: 1 / 1.05; border-radius: 6px; padding: 8px; text-align: left; display: flex; flex-direction: column; justify-content: space-between; transition: transform .25s, background .25s, box-shadow .25s; overflow: hidden; }
+  .day:hover { transform: translateY(-2px); box-shadow: inset 0 0 0 1px var(--line-2); }
+  .day.q-exc { background: rgba(127,107,255,.3); }
+  .day.q-bom { background: rgba(127,107,255,.12); }
+  .day.q-lua { background: rgba(255,255,255,.03); }
+  .day.sel { box-shadow: inset 0 0 0 2px var(--ink); }
+  .day .dn { font-size: 15px; font-weight: 500; line-height: 1; }
+  .day.today .dn { display: inline-grid; place-items: center; width: 26px; height: 26px; margin: -4px; border-radius: 50%; background: var(--ink); color: #071033; }
+  .day .ev { font-size: 10.5px; line-height: 1.15; color: var(--moon); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .day .ev.met { color: var(--c); }
+  .day svg { position: absolute; right: 7px; top: 7px; width: 16px; height: 16px; }
+  .day.empty { visibility: hidden; }
+  .days.enter .day:not(.empty) { animation: dayIn .6s var(--ease) both; animation-delay: calc(var(--i) * 18ms); }
+  @keyframes dayIn { from { opacity: 0; transform: translateY(10px) scale(.94); } }
+  .legend { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px; }
+  .legend span { display: inline-flex; align-items: center; gap: 8px; }
+  .legend i { width: 14px; height: 14px; border-radius: 3px; display: inline-block; }
+  .detail { padding: 28px 0 0 40px; border-left: 1px solid var(--line); min-height: 100%; display: grid; gap: 20px; align-content: start; position: sticky; top: 90px; }
+  .detail h3 { font-size: clamp(32px, 3.2vw, 44px); }
+  .d-moon { display: flex; gap: 18px; align-items: center; }
+  .d-moon svg { width: 84px; height: 84px; flex: none; filter: drop-shadow(0 0 20px rgba(243,236,217,.25)); }
+  .d-moon b { display: block; font-size: 19px; font-weight: 500; }
+  .d-moon p { color: #b6c0e0; font-size: 15px; margin-top: 4px; }
+  .qbadge { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; width: fit-content; }
+  .qbadge i { width: 9px; height: 9px; border-radius: 50%; }
+  .qbadge.q-exc { color: var(--c); } .qbadge.q-exc i { background: var(--c); box-shadow: 0 0 10px var(--c); }
+  .qbadge.q-bom { color: var(--a); } .qbadge.q-bom i { background: var(--a); }
+  .qbadge.q-lua { color: var(--dim); } .qbadge.q-lua i { background: var(--moon); }
+  .d-ev div { padding: 16px 0; border-top: 1px solid var(--line); }
+  .d-ev b { display: block; font-weight: 500; margin-bottom: 4px; font-size: 17px; }
+  .d-ev p { color: #b6c0e0; font-size: 15px; }
+  .d-none { color: var(--dim); font-size: 15px; padding-top: 16px; border-top: 1px solid var(--line); }
+  .detail.swap > * { animation: fadeUp .45s var(--ease) both; }
+  .detail.swap > *:nth-child(2) { animation-delay: .03s; } .detail.swap > *:nth-child(3) { animation-delay: .06s; } .detail.swap > *:nth-child(4) { animation-delay: .09s; } .detail.swap > *:nth-child(5) { animation-delay: .12s; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } }
+  @media (max-width: 960px) { .cal-grid { grid-template-columns: 1fr; } .cal { padding-right: 0; } .detail { position: static; border-left: 0; padding-left: 0; margin-top: 32px; border-top: 1px solid var(--line); } }
+  @media (max-width: 560px) { .day { padding: 5px; border-radius: 5px; } .day .ev { display: none; } .day svg { width: 12px; height: 12px; right: 4px; top: auto; bottom: 5px; } .day .dn { font-size: 13px; } .day.met-day::after { content: ""; position: absolute; left: 6px; bottom: 6px; width: 6px; height: 6px; border-radius: 50%; background: var(--c); } }
+
+  /* onde observar */
+  .sim-wrap { display: grid; grid-template-columns: 1.5fr 1fr; gap: clamp(28px, 4vw, 56px); align-items: stretch; }
+  .sim { border-radius: 6px; overflow: hidden; position: relative; background: #040c2a; }
+  #sim { width: 100%; height: 100%; min-height: 380px; display: block; cursor: crosshair; }
+  .tip { position: absolute; pointer-events: none; padding: 6px 10px; border-radius: 4px; background: var(--ink); color: #071033; font-size: 13px; white-space: nowrap; opacity: 0; transform: translate(-50%, -150%); transition: opacity .15s; }
+  .controls { display: grid; gap: 28px; align-content: start; padding-top: 6px; }
+  .presets { display: flex; border: 1px solid var(--line-2); border-radius: 999px; padding: 4px; width: fit-content; max-width: 100%; flex-wrap: wrap; }
+  .chip { padding: 9px 14px; border-radius: 999px; transition: all .25s; color: var(--dim); }
+  .chip:hover { color: var(--ink); }
+  .chip.on { background: var(--ink); color: #071033; }
+  .ctl label { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+  .ctl label b { color: var(--ink); font-weight: 400; }
+  input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 2px; border-radius: 99px; background: linear-gradient(90deg, var(--a) var(--v, 50%), var(--line-2) var(--v, 50%)); }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--moon); box-shadow: 0 0 0 6px rgba(169,194,255,.16), 0 0 18px rgba(243,236,217,.55); cursor: grab; }
+  input[type=range]::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; border: 0; background: var(--moon); cursor: grab; }
+  .big { border-top: 1px solid var(--line); padding-top: 22px; }
+  .big strong { display: block; font-family: var(--serif); font-weight: 400; font-size: clamp(72px, 8vw, 116px); line-height: .9; letter-spacing: -.03em; }
+  .big span { display: block; margin-top: 10px; }
+  @media (max-width: 960px) { .sim-wrap { grid-template-columns: 1fr; } #sim { aspect-ratio: 16 / 10; height: auto; min-height: 0; } }
+
+  /* dúvidas */
+  .faq { max-width: 1000px; border-bottom: 1px solid var(--line); }
+  .qa { border-top: 1px solid var(--line); }
+  .qa summary { list-style: none; cursor: pointer; padding: 28px 0; display: flex; justify-content: space-between; gap: 24px; align-items: center; font-size: clamp(20px, 2.2vw, 28px); letter-spacing: -.02em; transition: color .25s; }
+  .qa summary::-webkit-details-marker { display: none; }
+  .qa summary:hover { color: var(--a); }
+  .qa summary i { position: relative; width: 22px; height: 22px; flex: none; }
+  .qa summary i::before, .qa summary i::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1.5px; background: currentColor; transition: transform .4s var(--ease); }
+  .qa summary i::after { transform: rotate(90deg); }
+  .qa[open] summary i::after { transform: rotate(0); }
+  .qa .ans { overflow: hidden; transition: height .45s var(--ease); }
+  .qa .ans p { padding: 0 0 30px; color: var(--dim); max-width: 64ch; font-size: 18px; }
+
+  /* receber (fim da página) */
+  .recv-sec { overflow: hidden; background: radial-gradient(ellipse 70% 60% at 80% 100%, rgba(127,107,255,.22), transparent 70%); }
+  .recv { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(40px, 7vw, 120px); align-items: center; }
+  .recv h2 { font-size: clamp(46px, 7vw, 108px); }
+  .checks { list-style: none; padding: 0; margin: 36px 0 40px; max-width: 560px; }
+  .checks li { display: grid; grid-template-columns: 28px 1fr; padding: 14px 0; border-top: 1px solid var(--line); color: var(--dim); font-size: 17px; }
+  .checks li::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--a); box-shadow: 0 0 10px var(--a); margin-top: 10px; }
+  .checks b { color: var(--ink); font-weight: 500; }
+  .mail { background: var(--paper); color: #0b1440; border-radius: 6px; padding: 30px 32px 34px; box-shadow: 0 50px 120px -30px rgba(0,0,0,.65), 0 0 0 1px rgba(255,255,255,.4);
+    transform: translateY(var(--my, 0px)) rotate(var(--mr, -3deg)); will-change: transform; }
+  .mail .small { color: #5b6694; }
+  .mail-top { display: grid; gap: 4px; padding-bottom: 18px; border-bottom: 1px solid rgba(11,20,64,.14); margin-bottom: 22px; }
+  .mail h3 { font-family: var(--serif); font-weight: 400; font-size: 46px; letter-spacing: -.02em; margin-bottom: 6px; }
+  .mail > p { color: #4b5585; margin-bottom: 20px; }
+  .mail ol { list-style: none; padding: 0; }
+  .mail li { display: grid; grid-template-columns: 56px 1fr; gap: 16px; align-items: center; padding: 14px 0; border-top: 1px solid rgba(11,20,64,.12); }
+  .mail li b { font-family: var(--serif); font-weight: 400; font-size: 34px; line-height: 1; }
+  .mail li b small { display: block; font-family: var(--sans); font-size: 12px; color: #5b6694; margin-top: 4px; }
+  .mail li span { display: block; font-weight: 500; }
+  .mail li em { display: block; font-style: normal; color: #5b6694; font-size: 14px; }
+  @media (max-width: 900px) { .recv { grid-template-columns: 1fr; } }
+
+  footer { padding: 32px var(--gutter); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; border-top: 1px solid var(--line); }
+  footer .fl { display: flex; gap: 22px; flex-wrap: wrap; }
+  footer a:hover { color: var(--ink); }
+  #toast { position: fixed; z-index: 70; left: 50%; bottom: 28px; transform: translate(-50%, 160%); padding: 14px 22px; border-radius: 999px; background: var(--ink); color: #071033; transition: transform .5s cubic-bezier(.2,.8,.2,1); font-size: 14px; font-weight: 500; }
+  #toast.on { transform: translate(-50%, 0); }
+
+  html.js .reveal { opacity: 0; transform: translateY(26px); transition: opacity .9s var(--ease) var(--d, 0s), transform .9s var(--ease) var(--d, 0s); }
+  html.js .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    html.js .reveal { opacity: 1; transform: none; transition: none; }
+    .split .w > span { transform: none; transition: none; }
+    .days.enter .day, .detail.swap > * { animation: none; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<header class="top" id="top">
+  <div class="top-in">
+    <a href="#topo" class="brand" aria-label="Aphélio, início">
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+        <ellipse cx="16" cy="16" rx="14" ry="7.5" transform="rotate(-24 16 16)" opacity=".55"/>
+        <circle cx="27" cy="9.4" r="2.8" fill="#a9c2ff" stroke="none"/>
+        <circle cx="7" cy="20" r="1.3" fill="currentColor" stroke="none"/>
+      </svg>
+      Aphélio
+    </a>
+    <nav class="links small" aria-label="Principal">
+      <a href="#destaques">Destaques</a>
+      <a href="#calendario">Calendário</a>
+      <a href="#onde">Onde observar</a>
+      <a href="#duvidas">Dúvidas</a>
+    </nav>
+    <a class="btn" href="#receber">Receber o guia</a>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="topo">
+  <canvas id="sky" aria-hidden="true"></canvas>
+  <div class="hero-in" id="heroIn">
+    <div>
+      <h1>O que ver no céu<br>em <em class="ed-month">novembro.</em></h1>
+      <p class="lead">Aphélio é um guia mensal do céu a olho nu: o que aparece, em que noite, a que horas e para onde olhar. Todo mês, no seu e&#8209;mail.</p>
+      <form class="signup" novalidate>
+        <input type="email" placeholder="seu@email.com" aria-label="Seu e-mail" required>
+        <button class="btn" type="submit">Receber o guia <span class="arr">→</span></button>
+      </form>
+      <p class="msg" role="status"></p>
+      <a class="jump" href="#destaques">Ver o guia de <span class="ed-month-plain">novembro</span> ↓</a>
+    </div>
+    <aside class="today" aria-label="O céu hoje">
+      <span class="today-l">Hoje</span>
+      <div class="today-top"><span id="tMoon"></span><div><b id="tName">—</b><p id="tSky"></p></div></div>
+      <p class="next" id="tNext"></p>
+    </aside>
+  </div>
+</section>
+
+<section id="destaques" data-tone="#050c26">
+  <div class="wrap">
+    <div class="head">
+      <h2 class="split">Três noites que valem <em class="ed-month-sair">sair de casa.</em></h2>
+    </div>
+    <div class="hl" id="hl"></div>
+    <div class="also" id="also"></div>
+    <p class="small note">Horários aproximados para o Sudeste do Brasil.</p>
+  </div>
+</section>
+
+<section id="calendario" data-tone="#0a1744">
+  <div class="wrap">
+    <div class="head">
+      <h2 class="split">Qual noite <em>vale a pena?</em></h2>
+      <p class="lead reveal">Cada dia mostra a fase da lua e o quanto o céu fica escuro. Toque num dia para ver os horários e o que observar.</p>
+    </div>
+    <div class="cal-grid reveal">
+      <div class="cal">
+        <div class="cal-top">
+          <h3 id="calTitle">—</h3>
+          <div class="arrows"><button id="calPrev" aria-label="Mês anterior">←</button><button id="calNext" aria-label="Próximo mês">→</button></div>
+        </div>
+        <div class="days" id="days"></div>
+        <div class="legend small">
+          <span><i style="background:rgba(127,107,255,.5)"></i>Céu escuro</span>
+          <span><i style="background:rgba(127,107,255,.2)"></i>Escuro parte da noite</span>
+          <span><i style="background:rgba(255,255,255,.07)"></i>Lua forte</span>
+        </div>
+      </div>
+      <aside class="detail" id="detail" aria-live="polite"></aside>
+    </div>
+  </div>
+</section>
+
+<section id="onde" data-tone="#030819">
+  <div class="wrap">
+    <div class="head">
+      <h2 class="split">Na cidade, dezenas de estrelas. <em>No campo, milhares.</em></h2>
+      <p class="lead reveal">O lugar muda tudo. Escolha onde você vai observar e quanto tempo vai esperar no escuro.</p>
+    </div>
+    <div class="sim-wrap">
+      <div class="sim reveal">
+        <canvas id="sim" aria-label="Simulação do céu noturno"></canvas>
+        <div class="tip" id="simTip"></div>
+      </div>
+      <div class="controls reveal">
+        <div class="presets small" id="presets">
+          <button class="chip small on" data-b="8">Cidade grande</button>
+          <button class="chip small" data-b="5">Subúrbio</button>
+          <button class="chip small" data-b="2">Zona rural</button>
+        </div>
+        <div class="ctl">
+          <label class="small"><span>Poluição luminosa</span><b id="bTxt">—</b></label>
+          <input type="range" id="bortle" min="1" max="9" step="1" value="8" aria-label="Poluição luminosa">
+        </div>
+        <div class="ctl">
+          <label class="small"><span>Tempo no escuro</span><b id="tTxt">—</b></label>
+          <input type="range" id="adapt" min="0" max="20" step="1" value="0" aria-label="Tempo no escuro, em minutos">
+        </div>
+        <div class="big"><strong id="nStars">0</strong><span class="small">estrelas visíveis a olho nu</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="duvidas" data-tone="#081438">
+  <div class="wrap">
+    <div class="head">
+      <h2 class="split">Dúvidas <em>frequentes.</em></h2>
+    </div>
+    <div class="faq" id="faq"></div>
+  </div>
+</section>
+
+<section id="receber" data-tone="#0e1340" class="recv-sec">
+  <div class="wrap recv">
+    <div>
+      <h2 class="split">Receba o céu de <em class="ed-month">novembro.</em></h2>
+      <ol class="checks reveal">
+        <li><span><b>Os destaques do mês</b>, com data, horário e direção.</span></li>
+        <li><span><b>As melhores noites</b>, conforme a fase da lua.</span></li>
+        <li><span><b>Chuvas de meteoros</b> e quanto a lua atrapalha cada uma.</span></li>
+        <li><span><b>O nível de cada alvo</b>: olho nu, binóculo ou telescópio.</span></li>
+      </ol>
+      <form class="signup reveal" novalidate>
+        <input type="email" placeholder="seu@email.com" aria-label="Seu e-mail" required>
+        <button class="btn" type="submit">Receber o guia <span class="arr">→</span></button>
+      </form>
+      <p class="msg" role="status"></p>
+    </div>
+    <div class="mail" id="mail" aria-label="Exemplo do e-mail do guia">
+      <div class="mail-top small"><span>De: Aphélio</span><span>Assunto: o céu de <span class="ed-month-plain">novembro</span></span></div>
+      <h3>O céu de <span class="ed-month-plain">novembro</span></h3>
+      <p>As noites que valem sair de casa.</p>
+      <ol id="mailList"></ol>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="small">
+  <span>Aphélio · Guia mensal do céu</span>
+  <span class="fl"><a href="#destaques">Destaques</a><a href="#calendario">Calendário</a><a href="#onde">Onde observar</a><a href="#duvidas">Dúvidas</a><a href="#receber">Receber o guia</a></span>
+</footer>
+<div id="toast" role="status"></div>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var clamp = function (v, a, b) { return v < a ? a : v > b ? b : v; };
+  var lerp = function (a, b, t) { return a + (b - a) * t; };
+  var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+  function srand(seed) { return function () { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }; }
+  var root = document.documentElement;
+
+  /* ---------- laço de animação único ---------- */
+  var subs = [], last = 0;
+  function frame(ts) {
+    requestAnimationFrame(frame);
+    var t = ts / 1000, dt = Math.min(.05, last ? t - last : .016); last = t;
+    for (var i = 0; i < subs.length; i++) { try { subs[i](t, dt); } catch (err) { if (!subs[i].failed) { subs[i].failed = 1; console.error(err); } } }
+  }
+  requestAnimationFrame(frame);
+
+  /* ---------- toast ---------- */
+  var toastEl = $('#toast'), toastT;
+  function toast(m) { toastEl.textContent = m; toastEl.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(function () { toastEl.classList.remove('on'); }, 2800); }
+
+  /* =====================================================================
+     LUA: cálculo da fase
+     ===================================================================== */
+  var SYN = 29.530588853, REF = Date.UTC(2000, 0, 6, 18, 14), DAY = 86400000;
+  var MONTHS = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+  var MON = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+  var WD = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+  var PHASES = ['Lua Nova', 'Lua Crescente', 'Quarto Crescente', 'Crescente Gibosa', 'Lua Cheia', 'Minguante Gibosa', 'Quarto Minguante', 'Lua Minguante'];
+  function ageAt(ms) { return (((ms - REF) / DAY) % SYN + SYN) % SYN; }
+  function illum(age) { return (1 - Math.cos(age / SYN * 2 * Math.PI)) / 2; }
+  function phaseName(age) { return PHASES[Math.round(age / SYN * 8) % 8]; }
+  function hm(min) {
+    min = ((Math.round(min / 10) * 10) % 1440 + 1440) % 1440;
+    return pad(Math.floor(min / 60)) + 'h' + pad(min % 60);
+  }
+  // Céu da noite, pela idade da lua (pôr do sol ~18h40 no Sudeste; a lua atrasa ~50 min por dia)
+  function sky(age) {
+    var il = illum(age), q = il < .3 ? 'exc' : il < .7 ? 'bom' : 'lua';
+    var label = q === 'exc' ? 'Céu escuro' : q === 'bom' ? 'Escuro parte da noite' : 'Lua forte';
+    if (age < 1.2 || age > 28.3) return { q: 'exc', label: 'Céu escuro', t: 'Sem lua: céu escuro a noite toda.' };
+    if (age < 13.6) return { q: q, label: label, t: 'A lua se põe por volta de ' + hm(18 * 60 + 40 + age * 50.5) + '. Céu escuro depois disso.' };
+    if (age > 15.9) return { q: q, label: label, t: 'A lua nasce por volta de ' + hm(18 * 60 + 40 + (age - 14.77) * 50.5) + '. Céu escuro antes disso.' };
+    return { q: 'lua', label: 'Lua forte', t: 'Lua no céu a noite toda. Boa para observá-la, ruim para estrelas fracas.' };
+  }
+  var CRAT = [[40, 34, 6], [62, 50, 8], [44, 68, 4.5], [68, 28, 3], [28, 54, 4], [56, 80, 5], [74, 64, 3], [50, 22, 2.5], [34, 74, 3], [80, 44, 2.5]];
+  var uid = 0;
+  function moonSVG(age, detail) {
+    var f = age / SYN, r = 46, cos = Math.cos(f * 2 * Math.PI), rx = Math.abs(cos) * r, waxing = f < .5;
+    var sweep = waxing ? (cos > 0 ? 0 : 1) : (cos > 0 ? 1 : 0), id = 'm' + (uid++);
+    var lit = 'M50 4 A46 46 0 0 ' + (waxing ? 1 : 0) + ' 50 96 A' + rx.toFixed(2) + ' 46 0 0 ' + sweep + ' 50 4Z';
+    var s = '<svg viewBox="0 0 100 100" aria-hidden="true"><defs><radialGradient id="g' + id + '" cx="38%" cy="36%"><stop offset="0" stop-color="#fffaf0"/><stop offset="1" stop-color="#d4cdbb"/></radialGradient>' +
+      (detail ? '<clipPath id="c' + id + '"><path d="' + lit + '"/></clipPath>' : '') + '</defs>' +
+      '<circle cx="50" cy="50" r="46" fill="#0d1d55" stroke="rgba(169,194,255,.35)" stroke-width="' + (detail ? .6 : 3) + '"/>' +
+      '<path d="' + lit + '" fill="url(#g' + id + ')"/>';
+    if (detail) s += '<g clip-path="url(#c' + id + ')" fill="rgba(120,112,95,.2)">' + CRAT.map(function (c) { return '<circle cx="' + c[0] + '" cy="' + c[1] + '" r="' + c[2] + '"/>'; }).join('') + '</g>';
+    return s + '</svg>';
+  }
+
+  /* =====================================================================
+     DADOS: chuvas de meteoros (picos anuais) e destaques por edição
+     ===================================================================== */
+  var SHOWERS = [
+    { n: 'Quadrantídeas', m: 1, d: 3, z: 110, v: 0, dir: 'o norte, baixo no horizonte', best: 'na madrugada' },
+    { n: 'Líridas', m: 4, d: 22, z: 18, v: 1, dir: 'o nordeste', best: 'na madrugada' },
+    { n: 'Eta Aquáridas', m: 5, d: 6, z: 50, v: 2, dir: 'o leste', best: 'antes do amanhecer' },
+    { n: 'Perseidas', m: 8, d: 12, z: 100, v: 1, dir: 'o nordeste', best: 'na madrugada' },
+    { n: 'Dracônidas', m: 10, d: 8, z: 10, v: 0, dir: 'o norte', best: 'no início da noite' },
+    { n: 'Oriônidas', m: 10, d: 21, z: 20, v: 2, dir: 'o leste, rumo a Órion', best: 'depois da meia-noite' },
+    { n: 'Táuridas do Sul', m: 11, d: 5, z: 5, v: 2, dir: 'o leste', best: 'a noite toda' },
+    { n: 'Táuridas do Norte', m: 11, d: 12, z: 5, v: 2, dir: 'o leste', best: 'a noite toda' },
+    { n: 'Leônidas', m: 11, d: 17, z: 15, v: 2, dir: 'o leste, na constelação de Leão', best: 'na madrugada' },
+    { n: 'Geminídeas', m: 12, d: 14, z: 120, v: 2, dir: 'o nordeste', best: 'a partir das 22h' },
+    { n: 'Ursídeas', m: 12, d: 22, z: 10, v: 0, dir: 'o norte', best: 'na madrugada' }
+  ];
+  var VIS = ['Pouco visível do Brasil', 'Visibilidade média do Brasil', 'Boa visibilidade do Brasil'];
+  function showerText(sh, age) {
+    var il = Math.round(illum(age) * 100);
+    return 'Até ~' + sh.z + ' meteoros por hora em céu ideal. ' + VIS[sh.v] + '. Olhe para ' + sh.dir + ', ' + sh.best + '. Lua ' + il + '% iluminada' + (il < 35 ? ': ótima noite.' : il < 70 ? ': atrapalha um pouco.' : ': só os meteoros mais brilhantes aparecem.');
+  }
+  // Destaques escritos à mão por edição (ano-mês). Sem edição escrita, a página monta os destaques sozinha.
+  var EDITIONS = {
+    '2026-11': {
+      focus: 17,
+      hl: [
+        { art: 'meteor', when: '17 nov · madrugada', title: 'Leônidas', text: 'A lua crescente se põe por volta de 1h30 e deixa o resto da madrugada escuro. Os meteoros são rápidos e brilhantes.', facts: [['Onde olhar', 'Leste, depois das 2h'], ['Quantos', 'Até ~15 por hora'], ['Como ver', 'Olho nu, deitado']] },
+        { art: 'saturn', when: 'O mês todo', title: 'Saturno e Júpiter', text: 'Saturno aparece alto, para o norte, logo que escurece. Júpiter nasce a leste mais tarde e brilha mais que qualquer estrela.', facts: [['Onde olhar', 'Norte ao anoitecer; leste mais tarde'], ['Horário', 'Júpiter nasce ~23h no início do mês e ~21h no fim'], ['Como ver', 'Olho nu; binóculo mostra as luas de Júpiter']] },
+        { art: 'galaxy', when: '6 a 12 nov', title: 'Semana sem lua', text: 'Lua nova no dia 9. Longe da cidade, procure ao sul as Nuvens de Magalhães: duas manchas pálidas que são outras galáxias.', facts: [['Onde olhar', 'Sul, a meia altura'], ['Horário', 'A noite toda'], ['Como ver', 'Olho nu, em céu escuro']] }
+      ],
+      also: [
+        ['5 e 12 nov', 'Táuridas', 'Poucos meteoros, mas com bolas de fogo brilhantes.'],
+        ['O mês todo', 'Plêiades', 'Grupo azulado no nordeste ao anoitecer. Lindo de binóculo.'],
+        ['Após 22h', 'Órion', 'As Três Marias sobem a leste no fim da noite.'],
+        ['24 nov', 'Lua Cheia', 'Nasce ao pôr do sol. Boa para fotografar a Lua.']
+      ]
+    }
+  };
+
+  /* ---------- edição: a partir do dia 25, a página já mostra o mês seguinte ---------- */
+  var now = new Date(), ed = new Date(now.getFullYear(), now.getMonth() + (now.getDate() >= 25 ? 1 : 0), 1);
+  var EY = ed.getFullYear(), EM = ed.getMonth(), EKEY = EY + '-' + pad(EM + 1);
+  $$('.ed-month').forEach(function (el) { el.textContent = MONTHS[EM] + '.'; });
+  $$('.ed-month-plain').forEach(function (el) { el.textContent = MONTHS[EM]; });
+  document.title = 'Aphélio — O que ver no céu em ' + MONTHS[EM];
+
+  /* ---------- eventos de um mês ---------- */
+  function monthEvents(y, m) {
+    var n = new Date(y, m + 1, 0).getDate(), days = [];
+    for (var d = 1; d <= n; d++) {
+      var noon = new Date(y, m, d, 12).getTime(), a0 = ageAt(noon), a1 = ageAt(noon + DAY), night = ageAt(new Date(y, m, d, 22).getTime());
+      var ev = [];
+      [[0, 'Lua Nova', 'Sem lua no céu: a melhor noite do mês para estrelas fracas e galáxias.'], [.25, 'Quarto Crescente', 'Metade da lua iluminada, visível até perto da meia-noite. As crateras ficam em relevo na linha de sombra.'], [.5, 'Lua Cheia', 'A lua nasce ao pôr do sol e fica no céu a noite toda. Boa para fotografá-la.'], [.75, 'Quarto Minguante', 'Metade iluminada, nasce perto da meia-noite. O início da noite fica escuro.']].forEach(function (p) {
+        var t = p[0] * SYN, hit = a1 >= a0 ? (a0 <= t && t < a1) : (t >= a0 || t < a1);
+        if (hit) ev.push({ k: 'lua', title: p[1], short: p[1].replace('Lua ', '').replace('Quarto ', ''), text: p[2] });
+      });
+      SHOWERS.forEach(function (sh) { if (sh.m === m + 1 && sh.d === d) ev.push({ k: 'met', title: sh.n, short: sh.n.replace(' do Sul', '').replace(' do Norte', ''), text: showerText(sh, night) }); });
+      days.push({ d: d, date: new Date(y, m, d), age: night, sky: sky(night), ev: ev });
+    }
+    return days;
+  }
+
+  /* =====================================================================
+     NAV, PROGRESSO E PARALLAX DO HERÓI (scroll)
+     ===================================================================== */
+  var prog = $('#progress'), topBar = $('#top'), heroIn = $('#heroIn'), navLinks = $$('.links a');
+  var secs = navLinks.map(function (a) { return $(a.getAttribute('href')); });
+  function onScroll() {
+    var y = scrollY, h = root.scrollHeight - innerHeight;
+    prog.style.transform = 'scaleX(' + (h > 0 ? y / h : 0) + ')';
+    topBar.classList.toggle('solid', y > innerHeight * .6);
+    if (!reduce) { var k = clamp(y / innerHeight, 0, 1); heroIn.style.transform = 'translateY(' + (y * .3) + 'px)'; heroIn.style.opacity = 1 - k * 1.3; }
+    var cur = -1; secs.forEach(function (s, i) { if (s && s.getBoundingClientRect().top < innerHeight * .4) cur = i; });
+    navLinks.forEach(function (a, i) { a.classList.toggle('on', i === cur); });
+  }
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // cada seção tem um tom de azul; o fundo da página desliza entre eles
+  var toned = $$('[data-tone]'), curTone = '';
+  function onTone() {
+    var mid = innerHeight * .5, tone = toned[0].dataset.tone;
+    toned.forEach(function (s) { var r = s.getBoundingClientRect(); if (r.top < mid) tone = s.dataset.tone; });
+    if (tone !== curTone) { curTone = tone; document.body.style.backgroundColor = tone; }
+  }
+  addEventListener('scroll', onTone, { passive: true }); onTone();
+
+  /* ---------- títulos: separa em palavras ---------- */
+  var wi = 0;
+  function splitNode(node, out) {
+    if (node.nodeType === 3) {
+      node.textContent.split(/(\s+)/).forEach(function (part) {
+        if (!part) return;
+        if (/^\s+$/.test(part)) { out.appendChild(document.createTextNode(' ')); return; }
+        var w = document.createElement('span'), i = document.createElement('span');
+        w.className = 'w'; i.textContent = part; i.style.setProperty('--i', wi++); w.appendChild(i); out.appendChild(w);
+      });
+    } else if (node.nodeType === 1) {
+      var clone = node.cloneNode(false);
+      Array.prototype.slice.call(node.childNodes).forEach(function (c) { splitNode(c, clone); });
+      out.appendChild(clone);
+    }
+  }
+  $$('.split').forEach(function (h) {
+    wi = 0; var frag = document.createDocumentFragment();
+    Array.prototype.slice.call(h.childNodes).forEach(function (c) { splitNode(c, frag); });
+    h.innerHTML = ''; h.appendChild(frag);
+  });
+
+  /* =====================================================================
+     HERÓI: céu animado com a lua de hoje
+     ===================================================================== */
+  var cv = $('#sky'), ctx = cv.getContext('2d'), W = 0, H = 0, stars = [], shoots = [], mx = 0, my = 0, tmx = 0, tmy = 0;
+  var ageToday = ageAt(Date.now());
+  function size() {
+    var r = cv.getBoundingClientRect(), dpr = Math.min(devicePixelRatio || 1, 2);
+    W = r.width; H = r.height; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var rnd = srand(7), n = Math.round(clamp(W * H / 1900, 400, 1200)), R = Math.hypot(W, H) * 1.05;
+    stars = [];
+    for (var i = 0; i < n; i++) { var m = Math.pow(rnd(), 2.4); stars.push({ a: rnd() * 6.2832, r: Math.sqrt(rnd()) * R, s: .35 + m * 1.7, b: .3 + m * .7, ph: rnd() * 6.28, sp: .6 + rnd() * 2.2, hue: rnd() }); }
+  }
+  size(); addEventListener('resize', size);
+  addEventListener('pointermove', function (e) { tmx = e.clientX / innerWidth - .5; tmy = e.clientY / innerHeight - .5; }, { passive: true });
+  function shoot(x, y) { var a = .45 + Math.random() * .5, sp = 700 + Math.random() * 500; shoots.push({ x: x == null ? W * (.1 + Math.random() * .7) : x, y: y == null ? H * Math.random() * .35 : y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 0, max: .8 + Math.random() * .6 }); }
+  cv.addEventListener('click', function (e) { var r = cv.getBoundingClientRect(); shoot(e.clientX - r.left, e.clientY - r.top); });
+  function ridge(base, amp, seed, col, par) {
+    ctx.beginPath(); ctx.moveTo(-20, H + 2);
+    for (var x = -20; x <= W + 20; x += 8) { var xx = x + seed * 100 - par; ctx.lineTo(x, base - amp * (.5 * Math.sin(xx * .0042 + seed) + .3 * Math.sin(xx * .0113 + seed * 2.1) + .2 * Math.sin(xx * .0271 + seed * 3.3))); }
+    ctx.lineTo(W + 20, H + 2); ctx.closePath(); ctx.fillStyle = col; ctx.fill();
+  }
+  var heroEl = $('.hero'), moonImg = new Image();
+  moonImg.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(moonSVG(ageToday, true).replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" '));
+  subs.push(function (t, dt) {
+    var r = heroEl.getBoundingClientRect(); if (r.bottom < 0) return;
+    mx += (tmx - mx) * (1 - Math.pow(.02, dt)); my += (tmy - my) * (1 - Math.pow(.02, dt));
+    var sc = clamp(-r.top / H, 0, 1), horizon = H * .8;
+    var g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#050d33'); g.addColorStop(.7, '#0c1f5c'); g.addColorStop(1, '#22307a');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    var pivX = W * .6 - mx * 24, pivY = H * 1.1, rot = t * (reduce ? 0 : .006) + sc * .25;
+    for (var i = 0; i < stars.length; i++) {
+      var s = stars[i], a = s.a + rot, x = pivX + Math.cos(a) * s.r, y = pivY + Math.sin(a) * s.r - my * 14 - sc * 60;
+      if (x < -4 || x > W + 4 || y < -4 || y > H * .92) continue;
+      var al = s.b * (reduce ? 1 : .6 + .4 * Math.sin(t * s.sp + s.ph)) * (1 - .7 * (y / H));
+      ctx.fillStyle = s.hue < .2 ? 'rgba(190,210,255,' + al + ')' : s.hue > .88 ? 'rgba(255,236,210,' + al + ')' : 'rgba(240,244,255,' + al + ')';
+      ctx.beginPath(); ctx.arc(x, y, s.s, 0, 6.2832); ctx.fill();
+    }
+    ctx.save(); ctx.translate(W * .55 - mx * 30, H * .38 - my * 20 - sc * 40); ctx.rotate(-.55);
+    for (var k = 0; k < 8; k++) { var ox = (k - 3.5) * W * .14, rr = W * (.15 + .05 * Math.sin(k * 1.7)), gg = ctx.createRadialGradient(ox, 0, 0, ox, 0, rr); gg.addColorStop(0, 'rgba(176,170,255,.13)'); gg.addColorStop(1, 'rgba(60,80,200,0)'); ctx.fillStyle = gg; ctx.save(); ctx.scale(1, .25); ctx.beginPath(); ctx.arc(ox, 0, rr, 0, 6.2832); ctx.fill(); ctx.restore(); }
+    ctx.restore();
+    var narrow = W < 760, il = illum(ageToday);
+    var mr = narrow ? 16 : Math.max(26, Math.min(W, H) * .05), mxp = (narrow ? W - 40 : W * .76) - mx * 40, myp = (narrow ? 104 : H * .24) - my * 20 - sc * 80;
+    var gl = ctx.createRadialGradient(mxp, myp, mr * .5, mxp, myp, mr * 7); gl.addColorStop(0, 'rgba(220,230,255,' + (.08 + .32 * il) + ')'); gl.addColorStop(1, 'rgba(120,140,255,0)');
+    ctx.fillStyle = gl; ctx.beginPath(); ctx.arc(mxp, myp, mr * 7, 0, 6.2832); ctx.fill();
+    if (moonImg.complete) { ctx.save(); ctx.translate(mxp - mr, myp - mr); ctx.scale(mr / 50, mr / 50); ctx.drawImage(moonImg, 0, 0, 100, 100); ctx.restore(); }
+    if (!reduce && Math.random() < dt * .22) shoot();
+    for (var q = shoots.length - 1; q >= 0; q--) {
+      var m = shoots[q]; m.life += dt; m.x += m.vx * dt; m.y += m.vy * dt;
+      var f = 1 - m.life / m.max; if (f <= 0) { shoots.splice(q, 1); continue; }
+      var gr = ctx.createLinearGradient(m.x, m.y, m.x - m.vx * .14, m.y - m.vy * .14); gr.addColorStop(0, 'rgba(255,255,255,' + f + ')'); gr.addColorStop(1, 'rgba(160,190,255,0)');
+      ctx.strokeStyle = gr; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(m.x, m.y); ctx.lineTo(m.x - m.vx * .14, m.y - m.vy * .14); ctx.stroke();
+    }
+    ridge(horizon - H * .02, H * .1, 1.3, '#1a2c74', mx * 18 + sc * 40);
+    ridge(horizon + H * .05, H * .1, 3.7, '#0d1a4c', mx * 34 + sc * 80);
+    ridge(horizon + H * .14, H * .08, 5.1, '#040a24', mx * 60 + sc * 120);
+    var tx = W * .88 - mx * 60, ty = horizon + H * .1, ang = -1.05 + my * .3 - mx * .2, L = Math.min(W, H) * .09;
+    ctx.strokeStyle = '#040a24'; ctx.lineWidth = 3; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(tx, ty - L * .5); ctx.lineTo(tx - L * .35, ty + L * .5); ctx.moveTo(tx, ty - L * .5); ctx.lineTo(tx + L * .35, ty + L * .5); ctx.moveTo(tx, ty - L * .5); ctx.lineTo(tx, ty + L * .5); ctx.stroke();
+    ctx.lineWidth = 9; ctx.beginPath(); ctx.moveTo(tx - Math.cos(ang) * L * .35, ty - L * .5 - Math.sin(ang) * L * .35); ctx.lineTo(tx + Math.cos(ang) * L * .8, ty - L * .5 + Math.sin(ang) * L * .8); ctx.stroke();
+    var fade = ctx.createLinearGradient(0, H * .45, 0, H); fade.addColorStop(0, 'rgba(5,12,38,0)'); fade.addColorStop(1, 'rgba(5,12,38,.6)'); ctx.fillStyle = fade; ctx.fillRect(0, H * .45, W, H * .55);
+  });
+
+  /* ---------- "Hoje" ---------- */
+  (function () {
+    var skyNow = sky(ageAt(new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22).getTime()));
+    $('#tMoon').innerHTML = moonSVG(ageToday, true);
+    $('#tName').textContent = phaseName(ageToday) + ' · ' + Math.round(illum(ageToday) * 100) + '%';
+    $('#tSky').textContent = skyNow.t;
+    var next = null;
+    for (var i = skyNow.q === 'exc' ? 0 : 1; i < 40 && !next; i++) {
+      var d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i, 22);
+      if (sky(ageAt(d.getTime())).q === 'exc') next = d;
+    }
+    $('#tNext').innerHTML = next && i === 1 && skyNow.q === 'exc' ? 'Hoje a noite é de <strong>céu escuro</strong>.' :
+      'Próxima noite de céu escuro: <strong>' + next.getDate() + ' de ' + MONTHS[next.getMonth()] + '</strong>.';
+  })();
+
+  /* =====================================================================
+     DESTAQUES: ocular que acompanha o cursor e gira com a rolagem
+     ===================================================================== */
+  function art(kind, seed, w, h) {
+    var rn = srand(seed), s = '', id = 'a' + (uid++);
+    var hue = { meteor: 250, saturn: 228, galaxy: 270 }[kind] || 240;
+    s += '<defs><radialGradient id="bg' + id + '" cx="50%" cy="45%" r="70%"><stop offset="0" stop-color="hsl(' + hue + ',55%,22%)"/><stop offset="1" stop-color="hsl(' + hue + ',65%,7%)"/></radialGradient>' +
+      '<radialGradient id="gl' + id + '"><stop offset="0" stop-color="#fff" stop-opacity=".85"/><stop offset="1" stop-color="#a9c2ff" stop-opacity="0"/></radialGradient>' +
+      '<linearGradient id="tr' + id + '" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff"/></linearGradient>' +
+      '<radialGradient id="pl' + id + '" cx="35%" cy="35%"><stop offset="0" stop-color="#f6ead0"/><stop offset="1" stop-color="#9c8b6c"/></radialGradient>' +
+      '<radialGradient id="jp' + id + '" cx="35%" cy="35%"><stop offset="0" stop-color="#fff4e0"/><stop offset="1" stop-color="#c9a77c"/></radialGradient></defs>';
+    s += '<rect width="' + w + '" height="' + h + '" fill="url(#bg' + id + ')"/>';
+    for (var i = 0; i < 110; i++) s += '<circle cx="' + (rn() * w).toFixed(1) + '" cy="' + (rn() * h).toFixed(1) + '" r="' + (rn() * 1.2 + .2).toFixed(2) + '" fill="#fff" opacity="' + (rn() * .7 + .15).toFixed(2) + '"/>';
+    var cx = w / 2, cy = h / 2;
+    if (kind === 'meteor') {
+      for (var j = 0; j < 7; j++) { var x = rn() * w * .7 + w * .2, y = rn() * h * .7 + h * .1, L = 50 + rn() * 70; s += '<g transform="translate(' + x.toFixed(0) + ' ' + y.toFixed(0) + ') rotate(152)"><rect x="' + (-L) + '" y="-.8" width="' + L + '" height="1.6" rx="1" fill="url(#tr' + id + ')"/><circle r="2" fill="#fff"/></g>'; }
+    } else if (kind === 'saturn') {
+      var sx = cx - 22, sy = cy + 14;
+      s += '<circle cx="' + sx + '" cy="' + sy + '" r="70" fill="url(#gl' + id + ')" opacity=".16"/><g transform="rotate(-18 ' + sx + ' ' + sy + ')"><ellipse cx="' + sx + '" cy="' + sy + '" rx="62" ry="14" fill="none" stroke="#e8dcc0" stroke-width="4" opacity=".7"/></g><circle cx="' + sx + '" cy="' + sy + '" r="27" fill="url(#pl' + id + ')"/><path d="M' + (sx - 62) + ' ' + (sy + 5) + ' Q' + sx + ' ' + (sy + 27) + ' ' + (sx + 62) + ' ' + (sy - 3) + '" fill="none" stroke="#e8dcc0" stroke-width="4" opacity=".85" transform="rotate(-18 ' + sx + ' ' + sy + ')"/>' +
+        '<circle cx="' + (cx + 58) + '" cy="' + (cy - 54) + '" r="12" fill="url(#jp' + id + ')"/>' + [-28, -20, 21, 32].map(function (o) { return '<circle cx="' + (cx + 58 + o) + '" cy="' + (cy - 54) + '" r="1.5" fill="#fff"/>'; }).join('');
+    } else if (kind === 'galaxy') {
+      [[.38, .44, 52, 26], [.66, .62, 32, 16]].forEach(function (c) {
+        s += '<ellipse cx="' + w * c[0] + '" cy="' + h * c[1] + '" rx="' + c[2] + '" ry="' + c[3] + '" fill="url(#gl' + id + ')" opacity=".55" transform="rotate(-20 ' + w * c[0] + ' ' + h * c[1] + ')"/>';
+        for (var k = 0; k < 40; k++) { var a = rn() * 6.28, d = Math.pow(rn(), .7); s += '<circle cx="' + (w * c[0] + Math.cos(a) * d * c[2]).toFixed(1) + '" cy="' + (h * c[1] + Math.sin(a) * d * c[3]).toFixed(1) + '" r=".9" fill="#dfe6ff" opacity=".7"/>'; }
+      });
+    }
+    return '<svg viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' + s + '</svg>';
+  }
+  function autoEdition(y, m) {
+    var days = monthEvents(y, m), hl = [], also = [];
+    days.forEach(function (d) { d.ev.forEach(function (e) {
+      var item = { art: e.k === 'met' ? 'meteor' : 'galaxy', when: pad(d.d) + ' ' + MON[m], title: e.title, text: e.text, facts: [['Céu', d.sky.label], ['Lua', d.sky.t]] };
+      if (e.k === 'met' || e.title === 'Lua Nova') hl.push(item);
+      else also.push([pad(d.d) + ' ' + MON[m], e.title, e.text]);
+    }); });
+    return { hl: hl.slice(0, 3), also: also.slice(0, 4) };
+  }
+  var EDN = EDITIONS[EKEY] || autoEdition(EY, EM);
+  $('#hl').innerHTML = EDN.hl.map(function (h, i) {
+    return '<article class="hitem reveal" style="--d:' + i * .1 + 's"><span class="when">' + h.when + '</span>' +
+      '<div class="eye"><div class="lens">' + art(h.art, 11 + i * 7, 300, 300) + '</div><div class="cross"></div></div>' +
+      '<h3>' + h.title + '</h3><p>' + h.text + '</p><dl class="facts">' +
+      h.facts.map(function (f) { return '<div><dt>' + f[0] + '</dt><dd>' + f[1] + '</dd></div>'; }).join('') + '</dl></article>';
+  }).join('');
+  $('#also').innerHTML = EDN.also.map(function (a, i) { return '<div class="reveal" style="--d:' + i * .06 + 's"><span class="small">' + a[0] + '</span><b>' + a[1] + '</b><p>' + a[2] + '</p></div>'; }).join('');
+  var eyes = $$('.eye');
+  addEventListener('pointermove', function (e) {
+    if (e.pointerType !== 'mouse') return;
+    eyes.forEach(function (eye) {
+      var r = eye.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return;
+      var dx = clamp((e.clientX - (r.left + r.width / 2)) / innerWidth, -.5, .5), dy = clamp((e.clientY - (r.top + r.height / 2)) / innerHeight, -.5, .5);
+      eye.style.setProperty('--lx', (-dx * 60) + 'px'); eye.style.setProperty('--ly', (-dy * 60) + 'px');
+    });
+  }, { passive: true });
+  subs.push(function () { if (reduce) return; var y = scrollY; eyes.forEach(function (eye, i) { eye.style.setProperty('--rot', (y * (i % 2 ? -.06 : .06)) + 'deg'); }); });
+
+  /* =====================================================================
+     CALENDÁRIO
+     ===================================================================== */
+  var minM = new Date(now.getFullYear(), now.getMonth(), 1), maxM = new Date(now.getFullYear(), now.getMonth() + 2, 1);
+  var calY = EY, calM = EM, selD = null, calDays = [], calSeen = false;
+  var daysEl = $('#days'), detail = $('#detail');
+  function isToday(d) { return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth() && d.getDate() === now.getDate(); }
+  function renderCal() {
+    calDays = monthEvents(calY, calM);
+    $('#calTitle').textContent = MONTHS[calM] + ' ' + calY;
+    var first = new Date(calY, calM, 1).getDay(), html = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'].map(function (w) { return '<span class="dow small">' + w + '</span>'; }).join('');
+    for (var i = 0; i < first; i++) html += '<span class="day empty"></span>';
+    calDays.forEach(function (c, i) {
+      var met = c.ev.some(function (e) { return e.k === 'met'; });
+      html += '<button class="day q-' + c.sky.q + (isToday(c.date) ? ' today' : '') + (met ? ' met-day' : '') + '" style="--i:' + i + '" data-d="' + c.d + '" aria-label="' + c.d + ' de ' + MONTHS[calM] + ': ' + c.sky.label + (c.ev.length ? ', ' + c.ev.map(function (e) { return e.title; }).join(', ') : '') + '">' +
+        '<span class="dn">' + c.d + '</span>' + moonSVG(c.age) + (c.ev.length ? '<span class="ev' + (met ? ' met' : '') + '">' + c.ev.map(function (e) { return e.short; }).join(' · ') + '</span>' : '') + '</button>';
+    });
+    daysEl.classList.remove('enter'); daysEl.innerHTML = html;
+    if (calSeen) { void daysEl.offsetWidth; daysEl.classList.add('enter'); }
+    $('#calPrev').disabled = new Date(calY, calM, 1) <= minM;
+    $('#calNext').disabled = new Date(calY, calM, 1) >= maxM;
+    if (!selD) {
+      var inMonth = now.getFullYear() === calY && now.getMonth() === calM;
+      selD = inMonth ? now.getDate() : (calY === EY && calM === EM && EDITIONS[EKEY] ? EDITIONS[EKEY].focus : 1);
+    }
+    select(Math.min(selD, calDays.length));
+  }
+  function select(d) {
+    selD = d;
+    $$('.day', daysEl).forEach(function (b) { b.classList.toggle('sel', +b.dataset.d === d); });
+    var c = calDays[d - 1], il = Math.round(illum(c.age) * 100);
+    detail.classList.remove('swap');
+    detail.innerHTML = '<span class="small">' + WD[c.date.getDay()] + (isToday(c.date) ? ' · hoje' : '') + '</span>' +
+      '<h3>' + d + ' de ' + MONTHS[calM] + '</h3>' +
+      '<span class="qbadge q-' + c.sky.q + '"><i></i>' + c.sky.label + '</span>' +
+      '<div class="d-moon">' + moonSVG(c.age, true) + '<div><b>' + phaseName(c.age) + ' · ' + il + '%</b><p>' + c.sky.t + '</p></div></div>' +
+      (c.ev.length ? '<div class="d-ev">' + c.ev.map(function (e) { return '<div><b>' + e.title + '</b><p>' + e.text + '</p></div>'; }).join('') + '</div>'
+        : '<p class="d-none">Nenhum evento especial nesta noite. ' + (c.sky.q === 'exc' ? 'Com o céu escuro, é uma boa noite para planetas, aglomerados e a Via Láctea.' : 'Observe a Lua e os planetas brilhantes.') + '</p>');
+    void detail.offsetWidth; detail.classList.add('swap');
+  }
+  daysEl.addEventListener('click', function (e) { var b = e.target.closest('.day:not(.empty)'); if (b) select(+b.dataset.d); });
+  $('#calPrev').addEventListener('click', function () { var d = new Date(calY, calM - 1, 1); calY = d.getFullYear(); calM = d.getMonth(); selD = 1; renderCal(); });
+  $('#calNext').addEventListener('click', function () { var d = new Date(calY, calM + 1, 1); calY = d.getFullYear(); calM = d.getMonth(); selD = 1; renderCal(); });
+  renderCal();
+  new IntersectionObserver(function (es, o) { if (es[0].isIntersecting) { calSeen = true; daysEl.classList.add('enter'); o.disconnect(); } }, { threshold: .25 }).observe(daysEl);
+
+  /* ---------- exemplo do e-mail: inclina e assenta com a rolagem ---------- */
+  var mailItems = [];
+  monthEvents(EY, EM).forEach(function (c) { c.ev.forEach(function (e) { if (mailItems.length < 4) mailItems.push({ d: c.d, title: e.title, sub: e.k === 'met' ? 'Chuva de meteoros · ' + c.sky.label.toLowerCase() : c.sky.label }); }); });
+  $('#mailList').innerHTML = mailItems.map(function (m) { return '<li><b>' + pad(m.d) + '<small>' + MON[EM] + '</small></b><div><span>' + m.title + '</span><em>' + m.sub + '</em></div></li>'; }).join('');
+  var mail = $('#mail');
+  subs.push(function () {
+    if (reduce) return;
+    var r = mail.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return;
+    var k = clamp(1 - (r.top + r.height / 2) / innerHeight, 0, 1);
+    mail.style.setProperty('--mr', lerp(-9, -2, k) + 'deg'); mail.style.setProperty('--my', lerp(80, 0, k) + 'px');
+  });
+
+  /* =====================================================================
+     ONDE OBSERVAR: simulador
+     ===================================================================== */
+  var sim = $('#sim'), sctx = sim.getContext('2d'), SW = 0, SH = 0, simVis = false, simStars = [];
+  var NAMED = [['Sirius', -1.4, .22, .3], ['Canopus', -.7, .5, .18], ['Arcturus', -.05, .76, .26], ['Rigel', .12, .84, .55], ['Antares', 1, .4, .66], ['Betelgeuse', .5, .62, .12], ['Acrux', .8, .9, .3], ['Achernar', .5, .1, .7]];
+  var rs = srand(99);
+  for (var i = 0; i < 2600; i++) simStars.push({ x: rs(), y: rs() * .9, m: -.5 + 8.4 * Math.pow(rs(), .27), ph: rs() * 6.28 });
+  NAMED.forEach(function (n) { simStars.push({ x: n[2], y: n[3], m: n[1], name: n[0], ph: 0, big: 1 }); });
+  function sizeSim() { var r = sim.getBoundingClientRect(), dpr = Math.min(devicePixelRatio || 1, 2); SW = r.width; SH = r.height; sim.width = SW * dpr; sim.height = SH * dpr; sctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
+  sizeSim(); addEventListener('resize', sizeSim);
+  var sB = 8, sA = 0, limit = 0;
+  var BN = { 1: 'Céu excelente', 2: 'Zona rural escura', 3: 'Zona rural', 4: 'Transição rural', 5: 'Subúrbio', 6: 'Subúrbio claro', 7: 'Cidade', 8: 'Cidade grande', 9: 'Centro de metrópole' };
+  function simDraw(t) {
+    if (!SW) sizeSim();
+    limit = 7.7 - (sB - 1) * .56 - (1 - clamp(sA / 20, 0, 1)) * 1.7;
+    var glow = (sB - 1) / 8, g = sctx.createLinearGradient(0, 0, 0, SH);
+    g.addColorStop(0, 'rgb(' + (4 + glow * 28) + ',' + (12 + glow * 30) + ',' + (40 + glow * 44) + ')');
+    g.addColorStop(1, 'rgb(' + (8 + glow * 110) + ',' + (24 + glow * 90) + ',' + (72 + glow * 120) + ')');
+    sctx.fillStyle = g; sctx.fillRect(0, 0, SW, SH);
+    var shown = 0, k = Math.min(SW, SH) / 600;
+    for (var i = 0; i < simStars.length; i++) {
+      var s = simStars[i], a = clamp((limit - s.m) / 1.3, 0, 1); if (a <= 0) continue; shown++;
+      var x = s.x * SW, y = s.y * SH, r = clamp(2.1 - s.m * .34, .45, 3.4) * Math.max(.8, k), tw = reduce ? 1 : .82 + .18 * Math.sin(t * 2 + s.ph);
+      if (s.big) { var gl = sctx.createRadialGradient(x, y, 0, x, y, r * 7); gl.addColorStop(0, 'rgba(190,210,255,' + .5 * a + ')'); gl.addColorStop(1, 'rgba(190,210,255,0)'); sctx.fillStyle = gl; sctx.beginPath(); sctx.arc(x, y, r * 7, 0, 6.2832); sctx.fill(); }
+      sctx.fillStyle = 'rgba(245,248,255,' + a * tw + ')'; sctx.beginPath(); sctx.arc(x, y, r, 0, 6.2832); sctx.fill();
+    }
+    var mw = clamp((limit - 5.2) / 2.4, 0, 1);
+    if (mw > 0) { sctx.save(); sctx.translate(SW * .5, SH * .4); sctx.rotate(-.45); for (var j = 0; j < 7; j++) { var ox = (j - 3) * SW * .16, rr = SW * .24, gg = sctx.createRadialGradient(ox, 0, 0, ox, 0, rr); gg.addColorStop(0, 'rgba(180,176,255,' + .18 * mw + ')'); gg.addColorStop(1, 'rgba(100,120,230,0)'); sctx.fillStyle = gg; sctx.save(); sctx.scale(1, .22); sctx.beginPath(); sctx.arc(ox, 0, rr, 0, 6.2832); sctx.fill(); sctx.restore(); } sctx.restore(); }
+    var hg = sctx.createLinearGradient(0, SH * .72, 0, SH); hg.addColorStop(0, 'rgba(0,0,0,0)'); hg.addColorStop(1, 'rgba(3,9,30,.9)'); sctx.fillStyle = hg; sctx.fillRect(0, SH * .72, SW, SH * .28);
+    $('#nStars').textContent = shown.toLocaleString('pt-BR');
+  }
+  new IntersectionObserver(function (es) { simVis = es[0].isIntersecting; }).observe(sim);
+  subs.push(function (t) { if (simVis) simDraw(t); });
+  var tip = $('#simTip');
+  sim.addEventListener('pointermove', function (e) {
+    var r = sim.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top, best = null, bd = 30;
+    simStars.forEach(function (s) { if (!s.name) return; var d = Math.hypot(s.x * SW - x, s.y * SH - y); if (d < bd) { bd = d; best = s; } });
+    if (best) { tip.innerHTML = '<b>' + best.name + '</b>' + (limit > best.m ? '' : ' · invisível daqui'); tip.style.left = best.x * SW + 'px'; tip.style.top = best.y * SH + 'px'; tip.style.opacity = 1; }
+    else tip.style.opacity = 0;
+  });
+  sim.addEventListener('pointerleave', function () { tip.style.opacity = 0; });
+  var bR = $('#bortle'), aR = $('#adapt');
+  function fillRange(el) { el.style.setProperty('--v', ((el.value - el.min) / (el.max - el.min) * 100) + '%'); }
+  function syncSim() {
+    sB = +bR.value; sA = +aR.value; fillRange(bR); fillRange(aR);
+    $('#bTxt').textContent = BN[sB]; $('#tTxt').textContent = sA + ' min';
+    $$('#presets .chip').forEach(function (c) { c.classList.toggle('on', +c.dataset.b === sB); });
+  }
+  bR.addEventListener('input', syncSim); aR.addEventListener('input', syncSim);
+  function tweenTo(el, to) {
+    var from = +el.value, t0 = performance.now();
+    (function s(n) { var k = clamp((n - t0) / 900, 0, 1); el.value = Math.round(lerp(from, to, 1 - Math.pow(1 - k, 3))); syncSim(); if (k < 1) requestAnimationFrame(s); })(t0);
+  }
+  $('#presets').addEventListener('click', function (e) { var c = e.target.closest('.chip'); if (!c) return; tweenTo(bR, +c.dataset.b); if (+c.dataset.b <= 2) tweenTo(aR, 20); });
+  syncSim();
+
+  /* =====================================================================
+     DÚVIDAS: <details> nativo, altura animada por JS
+     ===================================================================== */
+  var QA = [
+    ['Preciso de telescópio?', 'Não. Tudo o que o guia destaca dá para ver a olho nu, e quando um binóculo ajuda, o guia avisa. Um binóculo 7×50 ou 10×50 já mostra aglomerados, crateras da Lua e as luas de Júpiter.'],
+    ['Qual é o melhor horário para observar?', 'Pelo menos uma hora e meia depois do pôr do sol, quando o céu fica totalmente escuro. O calendário mostra em cada noite quando a lua nasce ou se põe, que é o que mais muda o que dá para ver.'],
+    ['Como enxergar mais estrelas?', 'Saia da cidade e espere uns 20 minutos no escuro, sem olhar o celular. Se precisar de luz, use lanterna vermelha: a luz branca desfaz essa adaptação em segundos.'],
+    ['Os horários valem para todo o Brasil?', 'Eles são calculados para o Sudeste. No Norte, no Nordeste e no Sul os mesmos objetos aparecem, com diferenças de alguns minutos e de altura no céu.'],
+    ['E se o céu estiver nublado?', 'Confira a previsão de nuvens, e não só a de chuva. Chuvas de meteoros costumam ter boa atividade um ou dois dias antes e depois do pico, então ainda há chance.']
+  ];
+  $('#faq').innerHTML = QA.map(function (q, i) { return '<details class="qa reveal" style="--d:' + i * .05 + 's"><summary><span>' + q[0] + '</span><i aria-hidden="true"></i></summary><div class="ans"><p>' + q[1] + '</p></div></details>'; }).join('');
+  $$('.qa').forEach(function (d) {
+    var ans = $('.ans', d), timer;
+    $('summary', d).addEventListener('click', function (e) {
+      e.preventDefault(); clearTimeout(timer);
+      if (d.open) {
+        ans.style.height = ans.scrollHeight + 'px'; void ans.offsetHeight; ans.style.height = '0px';
+        timer = setTimeout(function () { d.open = false; ans.style.height = ''; }, reduce ? 0 : 450);
+      } else {
+        $$('.qa[open]').forEach(function (o) { if (o !== d) $('summary', o).click(); });
+        d.open = true; ans.style.height = '0px'; void ans.offsetHeight; ans.style.height = ans.scrollHeight + 'px';
+        timer = setTimeout(function () { ans.style.height = ''; }, reduce ? 0 : 450);
+      }
+    });
+  });
+
+  /* ---------- inscrição ---------- */
+  $$('.signup').forEach(function (f) {
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var v = $('input', f).value.trim(), m = f.nextElementSibling;
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { m.textContent = 'Digite um e-mail válido.'; return; }
+      m.textContent = 'Pronto! O guia de ' + MONTHS[EM] + ' chega no seu e-mail.'; toast('Inscrição feita'); f.reset();
+    });
+  });
+
+  /* ---------- revelar ao rolar ---------- */
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: .15 });
+  $$('.reveal, .split').forEach(function (el) { io.observe(el); });
+})();
+</script>
+</body>
+</html>
